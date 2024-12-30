@@ -17,7 +17,7 @@ const PatientRecords = () => {
   useEffect(() => {
     const fetchPatientRecords = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/patient-records");
+        const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/patient-records");
         if (Array.isArray(response.data)) {
           setPatientRecords(response.data);
         } else {
@@ -42,7 +42,7 @@ const PatientRecords = () => {
   const handleAddRecord = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/patient-records", newRecord);
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/patient-records", newRecord);
       setPatientRecords((prev) => [...prev, response.data]);
       setNewRecord({
         name: "",
@@ -59,7 +59,7 @@ const PatientRecords = () => {
 
   const handleDeleteRecord = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/patient-records/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/patient-records/${id}`);
       setPatientRecords((prev) => prev.filter((record) => record._id !== id));
     } catch (err) {
       console.error("Error deleting patient record:", err.message);

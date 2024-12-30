@@ -43,7 +43,7 @@ const Register = () => {
     }
 
     try {
-      await axios.post(`http://localhost:5000/api/auth/register/${userType}`, {
+      await axios.post(`https://healthsphere-ln4c.onrender.com/api/auth/register/${userType}`, {
         email,
         password,
       });

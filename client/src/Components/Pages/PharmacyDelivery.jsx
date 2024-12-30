@@ -11,7 +11,7 @@ const PharmacyDelivery = () => {
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/pharmacy");
+        const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/pharmacy");
         // Validate the response data to ensure it's an array
         if (Array.isArray(response.data)) {
           setMedicines(response.data);

@@ -13,7 +13,7 @@ const VideoConsultation = () => {
     // Fetch available doctors from the backend
     const fetchDoctors = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/consultations");
+        const res = await axios.get("https://healthsphere-ln4c.onrender.com/api/consultations");
         if (Array.isArray(res.data)) {
           setDoctors(res.data);
         } else {
@@ -37,7 +37,7 @@ const VideoConsultation = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/consultations", {
+      await axios.post("https://healthsphere-ln4c.onrender.com/api/consultations", {
         doctorName: selectedDoctor.doctorName,
         specialty: selectedDoctor.specialty,
         patientName: "John Doe", // Replace with actual patient data

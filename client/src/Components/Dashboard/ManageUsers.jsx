@@ -16,7 +16,7 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/userManage"); // Fetch users from backend
+      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/userManage"); // Fetch users from backend
       if (Array.isArray(response.data)) {
         setUsers(response.data);
       } else {
@@ -36,7 +36,7 @@ const ManageUsers = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/userManage/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/userManage/${id}`);
       alert("User deleted successfully!");
       fetchUsers(); // Refresh users list
     } catch (error) {
@@ -51,7 +51,7 @@ const ManageUsers = () => {
       role: "Updated Role",
     };
     try {
-      await axios.put(`http://localhost:5000/api/userManage/${id}`, updatedData);
+      await axios.put(`https://healthsphere-ln4c.onrender.com/api/userManage/${id}`, updatedData);
       alert("User updated successfully!");
       fetchUsers(); // Refresh users list
     } catch (error) {
@@ -63,7 +63,7 @@ const ManageUsers = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/userManage", newUser);
+      await axios.post("https://healthsphere-ln4c.onrender.com/api/userManage", newUser);
       alert("User added successfully!");
       setNewUser({ name: "", email: "", role: "", password: "" });
       fetchUsers(); // Refresh users list

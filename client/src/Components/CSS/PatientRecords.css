@@ -1,0 +1,62 @@
+.patient-records-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-record-form {
+  margin-bottom: 30px;
+}
+
+.add-record-form form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.add-record-form input {
+  flex: 1 1 45%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.record-card {
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.record-card p {
+  margin: 5px 0;
+}
+
+.loading,
+.error,
+.no-records {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+}

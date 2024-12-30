@@ -1,0 +1,35 @@
+.doctor-dashboard {
+  display: flex;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #28328c;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  background-color: #1e256e;
+}
+
+.main-content {
+  width: 80%;
+  padding: 20px;
+  background-color: #f9f9f9;
+}

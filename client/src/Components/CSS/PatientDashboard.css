@@ -1,0 +1,36 @@
+.patient-dashboard-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #28328c;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar h2 {
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+  background-color: #1f2565;
+  color: white;
+}
+
+.main-content {
+  width: 80%;
+  padding: 20px;
+}

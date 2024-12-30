@@ -1,0 +1,91 @@
+/* DoctorPanel.css */
+
+.doctor-panel-container {
+    font-family: "Arial", sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .appointments-table {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .table-header,
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    padding: 15px 20px;
+    align-items: center;
+  }
+  
+  .table-header {
+    background-color: #f8f8fb;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .table-row {
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .table-row:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .status {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .status.pending {
+    color: #ff9800;
+  }
+  
+  .status.confirmed {
+    color: #4caf50;
+  }
+  
+  .status.completed {
+    color: #2196f3;
+  }
+  
+  .action-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+  }
+  
+  .action-btn.confirm {
+    background-color: #4caf50;
+    color: #fff;
+  }
+  
+  .action-btn.confirm:hover {
+    background-color: #388e3c;
+  }
+  
+  .action-btn.complete {
+    background-color: #2196f3;
+    color: #fff;
+  }
+  
+  .action-btn.complete:hover {
+    background-color: #1976d2;
+  }
+  

@@ -1,0 +1,81 @@
+/* PatientPanel.css */
+
+.patient-panel-container {
+    font-family: "Arial", sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .appointments-table {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .table-header,
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 15px 20px;
+    align-items: center;
+  }
+  
+  .table-header {
+    background-color: #f8f8fb;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .table-row {
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .table-row:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .status {
+    font-weight: bold;
+    text-transform: capitalize;
+    text-align: center;
+  }
+  
+  .status.pending {
+    color: #ff9800;
+  }
+  
+  .status.confirmed {
+    color: #4caf50;
+  }
+  
+  .status.completed {
+    color: #2196f3;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .table-header,
+    .table-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .table-header div:nth-child(2),
+    .table-header div:nth-child(3),
+    .table-header div:nth-child(4),
+    .table-row div:nth-child(2),
+    .table-row div:nth-child(3),
+    .table-row div:nth-child(4) {
+      display: none;
+    }
+  }
+  

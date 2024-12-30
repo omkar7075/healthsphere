@@ -32,7 +32,7 @@ const Login = () => {
 
     try {
       const { userType, email, password } = formData;
-      const response = await axios.post(`http://localhost:5000/api/auth/login/${userType}`, { email, password });
+      const response = await axios.post(`https://healthsphere-ln4c.onrender.com/api/auth/login/${userType}`, { email, password });
 
       alert("Login successful!");
       localStorage.setItem("token", response.data.token);

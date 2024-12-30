@@ -14,7 +14,7 @@ const HealthWellness = () => {
 
   const fetchArticles = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/articles");
+      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/articles");
       // Ensure the response is an array before setting it
       if (Array.isArray(response.data)) {
         setArticles(response.data);
@@ -38,7 +38,7 @@ const HealthWellness = () => {
   const handleAddArticle = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/articles", newArticle);
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/articles", newArticle);
       setArticles((prev) => [...prev, response.data]);
       setSuccessMessage("Article added successfully!");
       setNewArticle({ title: "", summary: "", image: "" });
@@ -49,7 +49,7 @@ const HealthWellness = () => {
 
   const handleDeleteArticle = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/articles/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/articles/${id}`);
       setArticles((prev) => prev.filter((article) => article._id !== id));
       setSuccessMessage("Article deleted successfully!");
     } catch (err) {

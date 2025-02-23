@@ -12,7 +12,7 @@ const SymptomChecker = () => {
   useEffect(() => {
     const fetchSymptomHistory = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/symptom-checker");
+        const res = await axios.get("https://healthsphere-ln4c.onrender.com/api/symptom-checker");
         // Validate the response to ensure it's an array
         if (Array.isArray(res.data)) {
           setSymptomHistory(res.data);
@@ -49,7 +49,7 @@ const SymptomChecker = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/symptom-checker", formData, {
+      const res = await axios.post("https://healthsphere-ln4c.onrender.com/api/symptom-checker", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setResponse(res.data);

@@ -26,7 +26,7 @@ const AppointmentBooking = () => {
     setErrorMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/appointments", formData);
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/appointments", formData);
       setSuccessMessage("Appointment booked successfully!");
       setFormData({
         name: "",

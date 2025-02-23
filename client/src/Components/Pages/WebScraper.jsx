@@ -19,7 +19,7 @@ const WebScraper = () => {
     setData(null);
 
     try {
-      const response = await axios.post("/api/scrape", { url });
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/scrape", { url });
       setData(response.data);
     } catch (err) {
       setError("Failed to scrape the website. Please check the URL.");

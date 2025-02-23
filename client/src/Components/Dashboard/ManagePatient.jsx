@@ -15,7 +15,7 @@ const ManagePatient = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/patients");
+      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/patients");
 
       // Ensure response is an array
       if (Array.isArray(response.data)) {
@@ -38,7 +38,7 @@ const ManagePatient = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/patients/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/patients/${id}`);
       alert("Patient deleted successfully!");
       fetchPatients();
     } catch (err) {
@@ -50,7 +50,7 @@ const ManagePatient = () => {
   const handleAddPatient = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/patients", newPatient);
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/patients", newPatient);
       setPatients((prev) => [...prev, response.data]); // Update state with the new patient
       alert("Patient added successfully!");
       setNewPatient({ name: "", age: "", gender: "", medicalHistory: "" });

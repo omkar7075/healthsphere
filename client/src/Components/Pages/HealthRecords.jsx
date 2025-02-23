@@ -15,7 +15,7 @@ const HealthRecords = () => {
 
   const fetchRecords = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/health-records");
+      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/health-records");
 
       // Ensure response is an array
       if (Array.isArray(response.data)) {
@@ -42,7 +42,7 @@ const HealthRecords = () => {
   const handleAddRecord = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/health-records", newRecord);
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/health-records", newRecord);
       setRecords((prev) => [...prev, response.data]);
       setSuccessMessage("Record added successfully!");
       setNewRecord({ date: "", doctor: "", diagnosis: "", prescription: "" });
@@ -54,7 +54,7 @@ const HealthRecords = () => {
 
   const handleDeleteRecord = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/health-records/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/health-records/${id}`);
       setRecords((prev) => prev.filter((record) => record._id !== id));
       setSuccessMessage("Record deleted successfully!");
     } catch (err) {

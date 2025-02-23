@@ -18,7 +18,7 @@ const LabBooking = () => {
 
   const fetchLabBookings = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/lab-bookings");
+      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/lab-bookings");
       if (Array.isArray(response.data)) {
         setLabBookings(response.data); // Ensure response is an array
       } else {
@@ -45,7 +45,7 @@ const LabBooking = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/lab-bookings", formData);
+      await axios.post("https://healthsphere-ln4c.onrender.com/api/lab-bookings", formData);
       setSuccessMessage("Lab booking added successfully!");
       fetchLabBookings();
       setFormData({
@@ -63,7 +63,7 @@ const LabBooking = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/lab-bookings/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/lab-bookings/${id}`);
       setSuccessMessage("Lab booking deleted successfully!");
       fetchLabBookings();
     } catch (err) {

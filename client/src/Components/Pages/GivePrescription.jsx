@@ -18,7 +18,7 @@ const GivePrescription = () => {
 
   const fetchPrescriptions = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/prescriptions");
+      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/prescriptions");
       // Ensure the response data is an array
       if (Array.isArray(response.data)) {
         setPrescriptions(response.data);
@@ -46,7 +46,7 @@ const GivePrescription = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/prescriptions", prescriptionData);
+      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/prescriptions", prescriptionData);
       setSuccessMessage("Prescription submitted successfully!");
       setPrescriptionData({
         patientName: "",
@@ -65,7 +65,7 @@ const GivePrescription = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/prescriptions/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/prescriptions/${id}`);
       setSuccessMessage("Prescription deleted successfully!");
       setPrescriptions((prev) => prev.filter((item) => item._id !== id)); // Update state after deletion
     } catch (err) {

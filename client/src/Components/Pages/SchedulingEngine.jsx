@@ -10,7 +10,7 @@ const SchedulingEngine = () => {
   useEffect(() => {
     const fetchSchedules = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/schedules");
+        const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/schedules");
         setSchedule(response.data);
       } catch (err) {
         console.error("Error fetching schedules:", err.message);
@@ -25,7 +25,7 @@ const SchedulingEngine = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/schedules/${id}`, { status: newStatus });
+      await axios.put(`https://healthsphere-ln4c.onrender.com/api/schedules/${id}`, { status: newStatus });
       setSchedule((prev) =>
         prev.map((item) =>
           item._id === id ? { ...item, status: newStatus } : item
@@ -38,7 +38,7 @@ const SchedulingEngine = () => {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/schedules/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/schedules/${id}`);
       setSchedule((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       console.error("Error deleting task:", err.message);

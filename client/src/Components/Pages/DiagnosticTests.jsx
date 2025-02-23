@@ -12,7 +12,7 @@ const DiagnosticTests = () => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/test-bookings");
+        const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/test-bookings");
         setAvailableTests(response.data);
       } catch (err) {
         console.error("Error fetching tests:", err.message);
@@ -28,7 +28,7 @@ const DiagnosticTests = () => {
   const addTest = async (test) => {
     if (!selectedTests.find((item) => item._id === test._id)) {
       try {
-        const response = await axios.post("/api/test-bookings", test);
+        const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/test-bookings", test);
         setSelectedTests((prev) => [...prev, response.data]);
         setSuccessMessage("Test added successfully!");
         setTimeout(() => setSuccessMessage(""), 3000);
@@ -40,7 +40,7 @@ const DiagnosticTests = () => {
 
   const removeTest = async (id) => {
     try {
-      await axios.delete(`/api/test-bookings/${id}`);
+      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/test-bookings/${id}`);
       setSelectedTests((prev) => prev.filter((item) => item._id !== id));
       setSuccessMessage("Test removed successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);

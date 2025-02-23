@@ -1,17 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Prescription = require("../models/Prescription");
-
-// Add a new prescription
-router.post("/", async (req, res) => {
-  try {
-    const newPrescription = new Prescription(req.body);
-    const savedPrescription = await newPrescription.save();
-    res.status(201).json(savedPrescription);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to add prescription." });
-  }
-});
+const { storePrescriptionOnBlockchain, getPrescriptionFromBlockchain } = require("../utils/PrescriptionBlockchain");
 
 // Get all prescriptions
 router.get("/", async (req, res) => {
@@ -23,17 +13,32 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Update a prescription
-router.put("/:id", async (req, res) => {
+// Add a new prescription and store on blockchain
+router.post("/", async (req, res) => {
   try {
-    const updatedPrescription = await Prescription.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedPrescription);
+    const { patientName, age, symptoms, diagnosis, prescription, notes } = req.body;
+
+    // Store in MongoDB
+    const newPrescription = new Prescription({ patientName, age, symptoms, diagnosis, prescription, notes });
+    const savedPrescription = await newPrescription.save();
+
+    // Store on Blockchain
+    const blockchainTx = await storePrescriptionOnBlockchain(patientName, age, symptoms, diagnosis, prescription, notes);
+
+    res.status(201).json({ message: "Prescription added successfully!", blockchainTx, savedPrescription });
   } catch (err) {
-    res.status(500).json({ error: "Failed to update prescription." });
+    res.status(500).json({ error: "Failed to add prescription." });
+  }
+});
+
+// Retrieve a prescription from blockchain
+router.get("/blockchain/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const prescription = await getPrescriptionFromBlockchain(id);
+    res.json(prescription);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to retrieve prescription from blockchain." });
   }
 });
 

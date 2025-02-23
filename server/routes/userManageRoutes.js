@@ -1,6 +1,13 @@
 const express = require("express");
-const router = express.Router();
 const User = require("../models/UserManage");
+const {
+  registerUserOnBlockchain,
+  updateUserOnBlockchain,
+  deleteUserOnBlockchain,
+  verifyUserOnBlockchain
+} = require("../utils/UserManageBlockchain");
+
+const router = express.Router();
 
 // Get all users
 router.get("/", async (req, res) => {
@@ -12,47 +19,56 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Add a new user
+// Register User on Blockchain
 router.post("/", async (req, res) => {
   const { name, email, role, password } = req.body;
 
   try {
     const newUser = new User({ name, email, role, password });
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    await newUser.save();
+
+    // Store user data on blockchain
+    const blockchainTx = await registerUserOnBlockchain(name, email, role, password);
+
+    res.status(201).json({ message: "User registered successfully!", blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Failed to add user." });
   }
 });
 
-// Update a user
+// Update User
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const updatedData = req.body;
+  const { name, email, role } = req.body;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
-      new: true,
-    });
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found." });
     }
-    res.status(200).json(updatedUser);
+
+    // Update user data on blockchain
+    const blockchainTx = await updateUserOnBlockchain(name, email, role);
+
+    res.status(200).json({ updatedUser, blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Failed to update user." });
   }
 });
 
-// Delete a user
+// Delete User
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) return res.status(404).json({ error: "User not found." });
 
   try {
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (!deletedUser) {
-      return res.status(404).json({ error: "User not found." });
-    }
-    res.status(200).json({ message: "User deleted successfully." });
+    await User.findByIdAndDelete(id);
+
+    // Delete user data from blockchain
+    const blockchainTx = await deleteUserOnBlockchain(user.email);
+
+    res.status(200).json({ message: "User deleted successfully.", blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Failed to delete user." });
   }

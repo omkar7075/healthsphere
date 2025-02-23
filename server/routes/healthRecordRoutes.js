@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const HealthRecord = require("../models/HealthRecord");
+const { storeHealthRecordOnBlockchain } = require("../utils/HealthRecordBlockchain");
 
 // Get all health records
 router.get("/", async (req, res) => {
@@ -12,28 +13,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Add a new health record
+// Add a new health record and store it on blockchain
 router.post("/", async (req, res) => {
   try {
-    const newRecord = new HealthRecord(req.body);
+    const { date, doctor, diagnosis, prescription } = req.body;
+
+    const newRecord = new HealthRecord({ date, doctor, diagnosis, prescription });
     const savedRecord = await newRecord.save();
-    res.status(201).json(savedRecord);
+
+    // Store on blockchain
+    const blockchainTx = await storeHealthRecordOnBlockchain(date, doctor, diagnosis, prescription);
+
+    res.status(201).json({ ...savedRecord._doc, blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Failed to add health record." });
-  }
-});
-
-// Update a health record
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedRecord = await HealthRecord.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedRecord);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update health record." });
   }
 });
 

@@ -2,10 +2,11 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { registerUserOnBlockchain, authenticateUserOnBlockchain } = require("../utils/AuthBlockchain");
 const router = express.Router();
 const { JWT_SECRET } = process.env;
 
-// Register User
+// Register User on Blockchain
 router.post("/register/:userType", async (req, res) => {
   const { email, password } = req.body;
   const { userType } = req.params;
@@ -17,13 +18,16 @@ router.post("/register/:userType", async (req, res) => {
     const newUser = new User({ email, password, userType });
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    // Store user data on blockchain
+    const blockchainTx = await registerUserOnBlockchain(email, password, userType);
+
+    res.status(201).json({ message: "User registered successfully!", blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Error registering user" });
   }
 });
 
-// Login User
+// Login User from Blockchain
 router.post("/login/:userType", async (req, res) => {
   const { email, password } = req.body;
   const { userType } = req.params;
@@ -35,30 +39,14 @@ router.post("/login/:userType", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
 
+    // Authenticate user on blockchain
+    const isBlockchainAuthenticated = await authenticateUserOnBlockchain(email, password);
+    if (!isBlockchainAuthenticated) return res.status(400).json({ error: "Blockchain authentication failed" });
+
     const token = jwt.sign({ id: user._id, userType }, process.env.JWT_SECRET, { expiresIn: "1h" });
     res.json({ token });
   } catch (err) {
     res.status(500).json({ error: "Error logging in user" });
-  }
-});
-
-// Update User
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updatedUser);
-  } catch (err) {
-    res.status(500).json({ error: "Error updating user" });
-  }
-});
-
-// Delete User
-router.delete("/:id", async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({ message: "User deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ error: "Error deleting user" });
   }
 });
 

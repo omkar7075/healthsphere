@@ -2,7 +2,10 @@ const express = require("express");
 const multer = require("multer");
 const Symptom = require("../models/Symptom");
 const analyzeImageOrText = require("../utils/analyzeImage");
-const path = require("path");
+const {
+  storeSymptomOnBlockchain,
+  getSymptomsFromBlockchain
+} = require("../utils/SymptomBlockchain");
 
 const router = express.Router();
 
@@ -17,17 +20,17 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Get all symptom records
+// Get all symptom records from blockchain
 router.get("/", async (req, res) => {
   try {
-    const symptoms = await Symptom.find();
+    const symptoms = await getSymptomsFromBlockchain();
     res.json(symptoms);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch symptom records." });
   }
 });
 
-// Add a new symptom record (text or image input)
+// Add a new symptom record
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { description } = req.body;
@@ -37,32 +40,23 @@ router.post("/", upload.single("image"), async (req, res) => {
       treatment: "Consult a physician.",
     };
 
-    // Analyze the input using Google Generative AI
+    // Analyze the input using AI
     if (req.file || description) {
       analysisResult = await analyzeImageOrText(req.file?.path, description);
     }
 
-    const newSymptom = new Symptom({
-      description: description || null,
-      image: req.file ? req.file.path : null,
-      ...analysisResult,
-    });
+    // Store symptom analysis on blockchain
+    const blockchainTx = await storeSymptomOnBlockchain(
+      description || "",
+      analysisResult.diagnosis,
+      analysisResult.precautions,
+      analysisResult.treatment
+    );
 
-    const savedSymptom = await newSymptom.save();
-    res.status(201).json(savedSymptom);
+    res.status(201).json({ ...analysisResult, blockchainTx });
   } catch (err) {
     console.error("Error adding symptom record:", err.message);
     res.status(500).json({ error: "Failed to add symptom record." });
-  }
-});
-
-// Delete a symptom record
-router.delete("/:id", async (req, res) => {
-  try {
-    await Symptom.findByIdAndDelete(req.params.id);
-    res.json({ message: "Symptom record deleted successfully." });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to delete symptom record." });
   }
 });
 

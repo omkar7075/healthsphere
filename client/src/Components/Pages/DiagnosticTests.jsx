@@ -3,102 +3,86 @@ import axios from "axios";
 import "../CSS/DiagnosticTests.css";
 
 const DiagnosticTests = () => {
-  const [search, setSearch] = useState("");
-  const [selectedTests, setSelectedTests] = useState([]);
   const [availableTests, setAvailableTests] = useState([]);
+  const [selectedTests, setSelectedTests] = useState([]);
+  const [blockchainTest, setBlockchainTest] = useState(null);
+  const [search, setSearch] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/test-bookings");
-        setAvailableTests(response.data);
+        const response = await axios.get("http://localhost:5000/api/test-bookings");
+        if (Array.isArray(response.data)) {
+          setAvailableTests(response.data);
+        } else {
+          throw new Error("Invalid data format received from the server.");
+        }
       } catch (err) {
-        console.error("Error fetching tests:", err.message);
-        setErrorMessage("Failed to fetch tests.");
+        alert("Failed to fetch test bookings.");
       }
     };
 
     fetchTests();
   }, []);
 
-  const handleSearchChange = (e) => setSearch(e.target.value);
+  const fetchTestFromBlockchain = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/test-bookings/blockchain/${id}`);
+      setBlockchainTest(response.data);
+    } catch (err) {
+      alert("Failed to fetch blockchain test booking data.");
+    }
+  };
 
   const addTest = async (test) => {
     if (!selectedTests.find((item) => item._id === test._id)) {
       try {
-        const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/test-bookings", test);
-        setSelectedTests((prev) => [...prev, response.data]);
-        setSuccessMessage("Test added successfully!");
-        setTimeout(() => setSuccessMessage(""), 3000);
+        const response = await axios.post("http://localhost:5000/api/test-bookings", test);
+        setSelectedTests((prev) => [...prev, response.data.savedBooking]);
+        alert(`Test booked successfully! Blockchain Tx: ${response.data.blockchainTx}`);
       } catch (err) {
-        setErrorMessage("Failed to add test.");
+        alert("Failed to book test.");
       }
     }
   };
 
-  const removeTest = async (id) => {
-    try {
-      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/test-bookings/${id}`);
-      setSelectedTests((prev) => prev.filter((item) => item._id !== id));
-      setSuccessMessage("Test removed successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000);
-    } catch (err) {
-      setErrorMessage("Failed to remove test.");
-    }
-  };
-
-  const totalCost = selectedTests.reduce((acc, item) => acc + item.price, 0);
-
   return (
     <div className="diagnostic-container">
       <h1 className="page-title">Diagnostic Tests & Lab Booking</h1>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="search-bar">
         <input
           type="text"
           placeholder="Search for tests..."
           value={search}
-          onChange={handleSearchChange}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div className="tests-list">
         {availableTests
-          .filter((test) =>
-            test.testName.toLowerCase().includes(search.toLowerCase())
-          )
+          .filter((test) => test.testName.toLowerCase().includes(search.toLowerCase()))
           .map((test) => (
             <div key={test._id} className="test-card">
               <h3>{test.testName}</h3>
               <p>₹{test.price}</p>
-              <button onClick={() => addTest(test)}>Add to Booking</button>
+              <button onClick={() => addTest(test)}>Book Test</button>
             </div>
           ))}
       </div>
-      <div className="booking-section">
-        <h2>Your Booking</h2>
-        {selectedTests.length > 0 ? (
-          <div>
-            <ul>
-              {selectedTests.map((test) => (
-                <li key={test._id}>
-                  {test.testName} - ₹{test.price}
-                  <button
-                    className="remove-button"
-                    onClick={() => removeTest(test._id)}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <p className="total-cost">Total: ₹{totalCost}</p>
-            <button className="confirm-button">Confirm Booking</button>
+      <div className="blockchain-section">
+        <h2>Verify Test Booking on Blockchain</h2>
+        <input
+          type="number"
+          placeholder="Enter Test ID"
+          onChange={(e) => fetchTestFromBlockchain(e.target.value)}
+        />
+        {blockchainTest && (
+          <div className="blockchain-details">
+            <p><strong>Test Name:</strong> {blockchainTest[0]}</p>
+            <p><strong>Price:</strong> ₹{blockchainTest[1]}</p>
+            <p><strong>User ID:</strong> {blockchainTest[2]}</p>
           </div>
-        ) : (
-          <p>No tests selected.</p>
         )}
       </div>
     </div>

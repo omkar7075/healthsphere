@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Medicine = require("../models/Medicine");
+const { storeMedicineTransaction } = require("../utils/MedicineBlockchain");
 
 // Get all medicines
 router.get("/", async (req, res) => {
@@ -23,17 +24,17 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update a medicine
-router.put("/:id", async (req, res) => {
+// Process medicine purchase and store on blockchain
+router.post("/purchase", async (req, res) => {
   try {
-    const updatedMedicine = await Medicine.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedMedicine);
+    const { buyer, medicineName, quantity, totalPrice } = req.body;
+
+    // Store transaction on blockchain
+    const blockchainTx = await storeMedicineTransaction(buyer, medicineName, quantity, totalPrice);
+
+    res.status(201).json({ message: "Transaction stored on Blockchain!", blockchainTx });
   } catch (err) {
-    res.status(500).json({ error: "Failed to update medicine." });
+    res.status(500).json({ error: "Failed to process transaction." });
   }
 });
 

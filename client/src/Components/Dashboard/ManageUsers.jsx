@@ -34,44 +34,39 @@ const ManageUsers = () => {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/userManage/${id}`);
-      alert("User deleted successfully!");
-      fetchUsers(); // Refresh users list
-    } catch (error) {
-      console.error("Error deleting user:", error.message);
-      alert("Failed to delete user.");
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    const updatedData = {
-      name: "Updated Name",
-      role: "Updated Role",
-    };
-    try {
-      await axios.put(`https://healthsphere-ln4c.onrender.com/api/userManage/${id}`, updatedData);
-      alert("User updated successfully!");
-      fetchUsers(); // Refresh users list
-    } catch (error) {
-      console.error("Error updating user:", error.message);
-      alert("Failed to update user.");
-    }
-  };
-
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://healthsphere-ln4c.onrender.com/api/userManage", newUser);
-      alert("User added successfully!");
+      const response = await axios.post("http://localhost:5000/api/userManage", newUser);
+      alert(`User added successfully! Blockchain Tx: ${response.data.blockchainTx}`);
       setNewUser({ name: "", email: "", role: "", password: "" });
       fetchUsers(); // Refresh users list
     } catch (err) {
-      console.error("Error adding user:", err.message);
       alert("Failed to add user.");
     }
   };
+  
+  const handleUpdateUser = async (id) => {
+    const updatedData = { name: "Updated Name", role: "Updated Role" };
+    try {
+      const response = await axios.put(`http://localhost:5000/api/userManage/${id}`, updatedData);
+      alert(`User updated successfully! Blockchain Tx: ${response.data.blockchainTx}`);
+      fetchUsers();
+    } catch (err) {
+      alert("Failed to update user.");
+    }
+  };
+  
+  const handleDeleteUser = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/userManage/${id}`);
+      alert(`User deleted successfully! Blockchain Tx: ${response.data.blockchainTx}`);
+      fetchUsers();
+    } catch (err) {
+      alert("Failed to delete user.");
+    }
+  };
+  
 
   if (loading) return <div className="loading">Loading Users...</div>;
   if (error) return <div className="error">{error}</div>;

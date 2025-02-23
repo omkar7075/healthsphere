@@ -3,6 +3,8 @@ import axios from "axios";
 import "../CSS/GivePrescription.css";
 
 const GivePrescription = () => {
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [blockchainPrescription, setBlockchainPrescription] = useState(null);
   const [prescriptionData, setPrescriptionData] = useState({
     patientName: "",
     age: "",
@@ -12,168 +14,55 @@ const GivePrescription = () => {
     notes: "",
   });
 
-  const [prescriptions, setPrescriptions] = useState([]); // Initialize as an array
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const fetchPrescriptions = async () => {
-    try {
-      const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/prescriptions");
-      // Ensure the response data is an array
-      if (Array.isArray(response.data)) {
-        setPrescriptions(response.data);
-      } else {
-        throw new Error("Invalid data format received from the server.");
-      }
-    } catch (err) {
-      console.error("Error fetching prescriptions:", err.message);
-      setErrorMessage("Failed to fetch prescriptions.");
-    }
-  };
-
   useEffect(() => {
+    const fetchPrescriptions = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/prescriptions");
+        if (Array.isArray(response.data)) {
+          setPrescriptions(response.data);
+        } else {
+          throw new Error("Invalid data format received from the server.");
+        }
+      } catch (err) {
+        alert("Failed to fetch prescriptions.");
+      }
+    };
+
     fetchPrescriptions();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPrescriptionData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const fetchPrescriptionFromBlockchain = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/prescriptions/blockchain/${id}`);
+      setBlockchainPrescription(response.data);
+    } catch (err) {
+      alert("Failed to fetch blockchain prescription data.");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://healthsphere-ln4c.onrender.com/api/prescriptions", prescriptionData);
-      setSuccessMessage("Prescription submitted successfully!");
-      setPrescriptionData({
-        patientName: "",
-        age: "",
-        symptoms: "",
-        diagnosis: "",
-        prescription: "",
-        notes: "",
-      });
-      setPrescriptions((prev) => [...prev, response.data]); // Update state with new prescription
+      const response = await axios.post("http://localhost:5000/api/prescriptions", prescriptionData);
+      setPrescriptions((prev) => [...prev, response.data.savedPrescription]);
+      alert(`Prescription added! Blockchain Tx: ${response.data.blockchainTx}`);
+      setPrescriptionData({ patientName: "", age: "", symptoms: "", diagnosis: "", prescription: "", notes: "" });
     } catch (err) {
-      console.error("Error submitting prescription:", err.message);
-      setErrorMessage("Failed to submit prescription.");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://healthsphere-ln4c.onrender.com/api/prescriptions/${id}`);
-      setSuccessMessage("Prescription deleted successfully!");
-      setPrescriptions((prev) => prev.filter((item) => item._id !== id)); // Update state after deletion
-    } catch (err) {
-      console.error("Error deleting prescription:", err.message);
-      setErrorMessage("Failed to delete prescription.");
+      alert("Failed to add prescription.");
     }
   };
 
   return (
     <div className="give-prescription-container">
       <h2>Give Prescription</h2>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form className="prescription-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="patientName">Patient Name</label>
-          <input
-            type="text"
-            id="patientName"
-            name="patientName"
-            placeholder="Enter patient's name"
-            value={prescriptionData.patientName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="age">Age</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            placeholder="Enter patient's age"
-            value={prescriptionData.age}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="symptoms">Symptoms</label>
-          <textarea
-            id="symptoms"
-            name="symptoms"
-            placeholder="Enter symptoms"
-            value={prescriptionData.symptoms}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
-        <div className="form-group">
-          <label htmlFor="diagnosis">Diagnosis</label>
-          <textarea
-            id="diagnosis"
-            name="diagnosis"
-            placeholder="Enter diagnosis"
-            value={prescriptionData.diagnosis}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
-        <div className="form-group">
-          <label htmlFor="prescription">Prescription</label>
-          <textarea
-            id="prescription"
-            name="prescription"
-            placeholder="Enter prescription"
-            value={prescriptionData.prescription}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
-        <div className="form-group">
-          <label htmlFor="notes">Additional Notes</label>
-          <textarea
-            id="notes"
-            name="notes"
-            placeholder="Enter any additional notes"
-            value={prescriptionData.notes}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-        <button type="submit" className="submit-button">
-          Submit Prescription
-        </button>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="patientName" placeholder="Patient Name" value={prescriptionData.patientName} onChange={(e) => setPrescriptionData({ ...prescriptionData, patientName: e.target.value })} required />
+        <input type="number" name="age" placeholder="Age" value={prescriptionData.age} onChange={(e) => setPrescriptionData({ ...prescriptionData, age: e.target.value })} required />
+        <textarea name="symptoms" placeholder="Symptoms" value={prescriptionData.symptoms} onChange={(e) => setPrescriptionData({ ...prescriptionData, symptoms: e.target.value })} required />
+        <textarea name="diagnosis" placeholder="Diagnosis" value={prescriptionData.diagnosis} onChange={(e) => setPrescriptionData({ ...prescriptionData, diagnosis: e.target.value })} required />
+        <textarea name="prescription" placeholder="Prescription" value={prescriptionData.prescription} onChange={(e) => setPrescriptionData({ ...prescriptionData, prescription: e.target.value })} required />
+        <button type="submit">Submit Prescription</button>
       </form>
-
-      <h3>Existing Prescriptions</h3>
-      <ul className="prescription-list">
-        {prescriptions.map((prescription) => (
-          <li key={prescription._id}>
-            <p>
-              <strong>Patient:</strong> {prescription.patientName}
-            </p>
-            <p>
-              <strong>Diagnosis:</strong> {prescription.diagnosis}
-            </p>
-            <p>
-              <strong>Prescription:</strong> {prescription.prescription}
-            </p>
-            <button
-              className="delete-button"
-              onClick={() => handleDelete(prescription._id)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

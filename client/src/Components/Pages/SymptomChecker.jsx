@@ -39,7 +39,7 @@ const SymptomChecker = () => {
     e.preventDefault();
     setResponse(null);
     setLoading(true);
-
+  
     const formData = new FormData();
     if (textInput) {
       formData.append("description", textInput);
@@ -47,15 +47,16 @@ const SymptomChecker = () => {
     if (imageInput) {
       formData.append("image", imageInput);
     }
-
+  
     try {
-      const res = await axios.post("https://healthsphere-ln4c.onrender.com/api/symptom-checker", formData, {
+      const res = await axios.post("http://localhost:5000/api/symptom-checker", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+  
       setResponse(res.data);
-
-      // Add the new response to the symptom history
-      setSymptomHistory((prev) => [res.data, ...prev]);
+  
+      // Add blockchain transaction to history
+      setSymptomHistory((prev) => [{ ...res.data, blockchainTx: res.data.blockchainTx }, ...prev]);
     } catch (error) {
       console.error("Error:", error.message);
       setResponse({ error: "Failed to analyze the input. Try again later." });
@@ -63,6 +64,7 @@ const SymptomChecker = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="symptom-checker-container">

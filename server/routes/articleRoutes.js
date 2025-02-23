@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Article = require("../models/Article");
+const { addArticleOnBlockchain, deleteArticleOnBlockchain } = require("../utils/HealthArticlesBlockchain");
 
-// Get all articles
+// Get all articles from MongoDB
 router.get("/", async (req, res) => {
   try {
     const articles = await Article.find();
@@ -12,38 +13,39 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Add a new article
+// Add a new article with blockchain
 router.post("/", async (req, res) => {
   try {
-    const newArticle = new Article(req.body);
+    const { title, summary, image } = req.body;
+
+    // Save to MongoDB
+    const newArticle = new Article({ title, summary, image });
     const savedArticle = await newArticle.save();
-    res.status(201).json(savedArticle);
+
+    // Save to Blockchain
+    const blockchainTx = await addArticleOnBlockchain(title, summary, image);
+
+    res.status(201).json({ ...savedArticle._doc, blockchainTx });
   } catch (err) {
-    res.status(500).json({ error: "Failed to add article." });
+    res.status(500).json({ error: "Failed to add article" });
   }
 });
 
-// Update an article
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedArticle = await Article.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedArticle);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update article." });
-  }
-});
-
-// Delete an article
+// Delete an article with blockchain
 router.delete("/:id", async (req, res) => {
   try {
+    const article = await Article.findById(req.params.id);
+    if (!article) return res.status(404).json({ error: "Article not found" });
+
+    // Remove from Blockchain
+    const blockchainTx = await deleteArticleOnBlockchain(req.params.id);
+
+    // Remove from MongoDB
     await Article.findByIdAndDelete(req.params.id);
-    res.json({ message: "Article deleted successfully." });
+
+    res.status(200).json({ message: "Article deleted successfully", blockchainTx });
   } catch (err) {
-    res.status(500).json({ error: "Failed to delete article." });
+    res.status(500).json({ error: "Failed to delete article" });
   }
 });
 

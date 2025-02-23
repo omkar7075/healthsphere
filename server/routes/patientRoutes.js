@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Patient = require("../models/Patient");
+const { storePatientOnBlockchain, getPatientFromBlockchain } = require("../utils/PatientBlockchain");
 
 // Get all patients
 router.get("/", async (req, res) => {
@@ -12,30 +13,32 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Add a new patient
+// Add a new patient and store on blockchain
 router.post("/", async (req, res) => {
   try {
     const { name, age, gender, medicalHistory } = req.body;
 
+    // Store in MongoDB
     const newPatient = new Patient({ name, age, gender, medicalHistory });
     const savedPatient = await newPatient.save();
-    res.status(201).json(savedPatient);
+
+    // Store on Blockchain
+    const blockchainTx = await storePatientOnBlockchain(name, age, gender, medicalHistory);
+
+    res.status(201).json({ message: "Patient added successfully!", blockchainTx, savedPatient });
   } catch (err) {
     res.status(500).json({ error: "Failed to add patient." });
   }
 });
 
-// Update a patient
-router.put("/:id", async (req, res) => {
+// Retrieve a patient from blockchain
+router.get("/blockchain/:id", async (req, res) => {
   try {
-    const updatedPatient = await Patient.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedPatient);
+    const { id } = req.params;
+    const patient = await getPatientFromBlockchain(id);
+    res.json(patient);
   } catch (err) {
-    res.status(500).json({ error: "Failed to update patient." });
+    res.status(500).json({ error: "Failed to retrieve patient record from blockchain." });
   }
 });
 

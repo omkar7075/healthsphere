@@ -8,10 +8,21 @@ import PatientRecords from "../Pages/PatientRecords";
 import ManagePatient from "../Dashboard/ManagePatient";
 import VideoConsultation from "../Pages/VideoConsultation";
 import GivePrescription from "../Pages/GivePrescription";
+import axios from "axios";
 
 const DoctorDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("appointments");
+  const [blockchainRecords, setBlockchainRecords] = useState([]);
   const navigate = useNavigate();
+
+  const fetchBlockchainRecords = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/doctor/records");
+      setBlockchainRecords(response.data);
+    } catch (error) {
+      console.error("Error fetching blockchain records:", error.message);
+    }
+  };
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -29,6 +40,28 @@ const DoctorDashboard = () => {
         return <VideoConsultation />;
       case "givePrescription":
         return <GivePrescription />;
+      case "blockchainRecords":
+        return (
+          <div className="blockchain-records">
+            <h2>Blockchain Patient Records</h2>
+            <button onClick={fetchBlockchainRecords} className="fetch-button">
+              Fetch Records
+            </button>
+            {blockchainRecords.length > 0 ? (
+              blockchainRecords.map((record, index) => (
+                <div key={index} className="record-card">
+                  <p><strong>Patient:</strong> {record.patientName}</p>
+                  <p><strong>Diagnosis:</strong> {record.diagnosis}</p>
+                  <p><strong>Prescription:</strong> {record.prescription}</p>
+                  <p><strong>Notes:</strong> {record.notes}</p>
+                  <p><strong>Timestamp:</strong> {new Date(record.timestamp * 1000).toLocaleString()}</p>
+                </div>
+              ))
+            ) : (
+              <p>No blockchain records found.</p>
+            )}
+          </div>
+        );
       default:
         return <AppointmentBooking />;
     }
@@ -36,10 +69,8 @@ const DoctorDashboard = () => {
 
   // Logout handler
   const handleLogout = () => {
-    // Clear session data (e.g., JWT token)
-    localStorage.removeItem("userToken"); // Example: remove from localStorage
-    sessionStorage.removeItem("userToken"); // Example: remove from sessionStorage
-    // Redirect to login page
+    localStorage.removeItem("userToken");
+    sessionStorage.removeItem("userToken");
     navigate("/login");
   };
 
@@ -55,7 +86,7 @@ const DoctorDashboard = () => {
           <li onClick={() => setActiveComponent("managePatient")}>Manage Patients</li>
           <li onClick={() => setActiveComponent("videoConsultation")}>Video Consultation</li>
           <li onClick={() => setActiveComponent("givePrescription")}>Prescriptions</li>
-          {/* Logout option */}
+          <li onClick={() => setActiveComponent("blockchainRecords")}>Blockchain Records</li>
           <li onClick={handleLogout} className="logout-item">
             Logout
           </li>

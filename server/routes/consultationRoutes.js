@@ -1,6 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const Consultation = require("../models/Consultation");
+const { storeConsultationOnBlockchain } = require("../utils/ConsultationBlockchain");
+
+// WebRTC Signaling for video calls
+const io = require("socket.io")(5001, {
+  cors: { origin: "*" }
+});
+
+// WebRTC signaling
+io.on("connection", (socket) => {
+  socket.on("offer", (data) => socket.broadcast.emit("offer", data));
+  socket.on("answer", (data) => socket.broadcast.emit("answer", data));
+  socket.on("ice-candidate", (data) => socket.broadcast.emit("ice-candidate", data));
+});
 
 // Get all consultations
 router.get("/", async (req, res) => {
@@ -18,34 +31,17 @@ router.post("/", async (req, res) => {
     const { doctorName, specialty, patientName, consultationDate, consultationTime } = req.body;
 
     const newConsultation = new Consultation({
-      doctorName,
-      specialty,
-      patientName,
-      consultationDate,
-      consultationTime,
+      doctorName, specialty, patientName, consultationDate, consultationTime
     });
 
     const savedConsultation = await newConsultation.save();
-    res.status(201).json(savedConsultation);
+    
+    // Store consultation on blockchain
+    const blockchainTx = await storeConsultationOnBlockchain(doctorName, patientName, specialty, consultationDate, consultationTime);
+
+    res.status(201).json({ ...savedConsultation._doc, blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Failed to add consultation." });
-  }
-});
-
-// Update a consultation
-router.put("/:id", async (req, res) => {
-  try {
-    const { status } = req.body;
-
-    const updatedConsultation = await Consultation.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
-
-    res.json(updatedConsultation);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update consultation." });
   }
 });
 

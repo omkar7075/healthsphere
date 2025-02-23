@@ -34,24 +34,20 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
-
+  
     const { email, password, confirmPassword, userType } = formData;
-
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-
+  
     try {
-      await axios.post(`https://healthsphere-ln4c.onrender.com/api/auth/register/${userType}`, {
-        email,
-        password,
-      });
-
-      setSuccessMessage("Registration successful! You can now log in.");
+      const response = await axios.post(`http://localhost:5000/api/auth/register/${userType}`, { email, password });
+  
+      setSuccessMessage(`Registration successful! Blockchain Tx: ${response.data.blockchainTx}`);
       setTimeout(() => navigate("/login"), 3000);
     } catch (error) {
-      console.error("Registration error:", error.message);
       setError("Registration failed. Please try again.");
     }
   };

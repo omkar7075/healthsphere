@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const LabBooking = require("../models/LabBooking");
+const { storeLabBookingOnBlockchain } = require("../utils/LabBookingBlockchain");
 
 // Get all lab bookings
 router.get("/", async (req, res) => {
@@ -12,28 +13,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Add a new lab booking
+// Add a new lab booking and store it on blockchain
 router.post("/", async (req, res) => {
   try {
-    const newBooking = new LabBooking(req.body);
+    const { name, email, phone, testType, appointmentDate, appointmentTime } = req.body;
+
+    const newBooking = new LabBooking({ name, email, phone, testType, appointmentDate, appointmentTime });
     const savedBooking = await newBooking.save();
-    res.status(201).json(savedBooking);
+
+    // Store on blockchain
+    const blockchainTx = await storeLabBookingOnBlockchain(name, email, phone, testType, appointmentDate, appointmentTime);
+
+    res.status(201).json({ ...savedBooking._doc, blockchainTx });
   } catch (err) {
     res.status(500).json({ error: "Failed to add lab booking." });
-  }
-});
-
-// Update a lab booking
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedBooking = await LabBooking.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedBooking);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update lab booking." });
   }
 });
 

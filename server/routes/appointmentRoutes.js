@@ -1,49 +1,44 @@
 const express = require("express");
 const router = express.Router();
 const Appointment = require("../models/Appointment");
+const {
+  bookAppointmentOnBlockchain,
+  cancelAppointmentOnBlockchain,
+} = require("../utils/AppointmentBlockchain");
 
-// Add an appointment
+// Add an appointment with blockchain
 router.post("/", async (req, res) => {
   try {
-    const newAppointment = new Appointment(req.body);
+    const { name, email, phone, doctor, date, time } = req.body;
+
+    // Save to MongoDB
+    const newAppointment = new Appointment({ name, email, phone, doctor, date, time });
     const savedAppointment = await newAppointment.save();
-    res.status(201).json(savedAppointment);
+
+    // Save to Blockchain
+    const blockchainTx = await bookAppointmentOnBlockchain(name, email, phone, doctor, date, time);
+
+    res.status(201).json({ ...savedAppointment._doc, blockchainTx });
   } catch (err) {
-    res.status(500).json({ error: "Failed to add appointment" });
+    res.status(500).json({ error: "Failed to book appointment" });
   }
 });
 
-// Get all appointments
-router.get("/", async (req, res) => {
-  try {
-    const appointments = await Appointment.find();
-    res.json(appointments);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch appointments" });
-  }
-});
-
-// Update an appointment
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedAppointment = await Appointment.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedAppointment);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update appointment" });
-  }
-});
-
-// Delete an appointment
+// Cancel an appointment with blockchain
 router.delete("/:id", async (req, res) => {
   try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) return res.status(404).json({ error: "Appointment not found" });
+
+    // Remove from Blockchain
+    const blockchainTx = await cancelAppointmentOnBlockchain(req.params.id);
+
+    // Remove from MongoDB
     await Appointment.findByIdAndDelete(req.params.id);
-    res.json({ message: "Appointment deleted successfully" });
+
+    res.status(200).json({ message: "Appointment canceled successfully", blockchainTx });
   } catch (err) {
-    res.status(500).json({ error: "Failed to delete appointment" });
+    res.status(500).json({ error: "Failed to cancel appointment" });
   }
 });
 

@@ -29,25 +29,18 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
     try {
       const { userType, email, password } = formData;
-      const response = await axios.post(`https://healthsphere-ln4c.onrender.com/api/auth/login/${userType}`, { email, password });
-
+      const response = await axios.post(`http://localhost:5000/api/auth/login/${userType}`, { email, password });
+  
       alert("Login successful!");
       localStorage.setItem("token", response.data.token);
-
-      const dashboardPath =
-        userType === "patient"
-          ? "/patient-dashboard"
-          : userType === "doctor"
-          ? "/doctor-dashboard"
-          : "/admin-dashboard";
-
+  
+      const dashboardPath = userType === "patient" ? "/patient-dashboard" : userType === "doctor" ? "/doctor-dashboard" : "/admin-dashboard";
       navigate(dashboardPath);
     } catch (error) {
-      console.error("Login error:", error.message);
-      setError("Invalid email or password.");
+      setError("Invalid credentials or Blockchain authentication failed.");
     } finally {
       setLoading(false);
     }

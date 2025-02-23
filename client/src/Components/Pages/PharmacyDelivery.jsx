@@ -5,21 +5,20 @@ import "../CSS/PharmacyDelivery.css";
 const PharmacyDelivery = () => {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
-  const [medicines, setMedicines] = useState([]); // Ensure medicines is initialized as an array
+  const [medicines, setMedicines] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [blockchainTx, setBlockchainTx] = useState("");
 
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get("https://healthsphere-ln4c.onrender.com/api/pharmacy");
-        // Validate the response data to ensure it's an array
+        const response = await axios.get("http://localhost:5000/api/pharmacy");
         if (Array.isArray(response.data)) {
           setMedicines(response.data);
         } else {
           throw new Error("Invalid data format received from the server.");
         }
       } catch (err) {
-        console.error("Error fetching medicines:", err.message);
         setErrorMessage("Failed to fetch medicines.");
       }
     };
@@ -39,12 +38,33 @@ const PharmacyDelivery = () => {
     setCart((prev) => prev.filter((item) => item._id !== id));
   };
 
-  const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+  const handleCheckout = async () => {
+    try {
+      const buyer = "John Doe"; // Replace with actual user data
+      const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+
+      for (const item of cart) {
+        await axios.post("http://localhost:5000/api/pharmacy/purchase", {
+          buyer,
+          medicineName: item.name,
+          quantity: 1,
+          totalPrice: item.price,
+        });
+      }
+
+      setBlockchainTx("Transaction stored on Blockchain!");
+      setCart([]);
+    } catch (err) {
+      setErrorMessage("Failed to process transaction.");
+    }
+  };
 
   return (
     <div className="pharmacy-container">
       <h1 className="page-title">Pharmacy & Medicine Delivery</h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {blockchainTx && <p className="blockchain-tx">{blockchainTx}</p>}
+      
       <div className="search-bar">
         <input
           type="text"
@@ -53,6 +73,7 @@ const PharmacyDelivery = () => {
           onChange={handleSearchChange}
         />
       </div>
+
       <div className="medicine-list">
         {medicines
           .filter((medicine) =>
@@ -66,6 +87,7 @@ const PharmacyDelivery = () => {
             </div>
           ))}
       </div>
+
       <div className="cart-section">
         <h2>Your Cart</h2>
         {cart.length > 0 ? (
@@ -74,17 +96,14 @@ const PharmacyDelivery = () => {
               {cart.map((item) => (
                 <li key={item._id}>
                   {item.name} - ₹{item.price}
-                  <button
-                    className="remove-button"
-                    onClick={() => removeFromCart(item._id)}
-                  >
-                    Remove
-                  </button>
+                  <button onClick={() => removeFromCart(item._id)}>Remove</button>
                 </li>
               ))}
             </ul>
-            <p className="total-price">Total: ₹{totalPrice}</p>
-            <button className="checkout-button">Checkout</button>
+            <p className="total-price">Total: ₹{cart.reduce((acc, item) => acc + item.price, 0)}</p>
+            <button className="checkout-button" onClick={handleCheckout}>
+              Checkout & Store on Blockchain
+            </button>
           </div>
         ) : (
           <p>Your cart is empty.</p>

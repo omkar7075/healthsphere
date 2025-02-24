@@ -1,35 +1,41 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
-contract SchedulingEngine {
+contract ScheduleEngine {
     struct Schedule {
         string task;
         string time;
         string status;
+        address createdBy;
     }
 
-    mapping(uint256 => Schedule) public schedules;
-    uint256 public scheduleCount;
-
-    event ScheduleAdded(uint256 scheduleId, string task, string time, string status);
-    event ScheduleUpdated(uint256 scheduleId, string status);
-    event ScheduleDeleted(uint256 scheduleId);
+    Schedule[] public schedules;
+    mapping(uint256 => address) public scheduleOwners;
+    
+    event ScheduleCreated(uint256 indexed scheduleId, string task, string time, string status, address createdBy);
+    event ScheduleUpdated(uint256 indexed scheduleId, string newStatus);
+    event ScheduleDeleted(uint256 indexed scheduleId);
 
     function addSchedule(string memory _task, string memory _time) public {
-        scheduleCount++;
-        schedules[scheduleCount] = Schedule(_task, _time, "Pending");
-        emit ScheduleAdded(scheduleCount, _task, _time, "Pending");
+        schedules.push(Schedule(_task, _time, "Pending", msg.sender));
+        uint256 scheduleId = schedules.length - 1;
+        scheduleOwners[scheduleId] = msg.sender;
+        emit ScheduleCreated(scheduleId, _task, _time, "Pending", msg.sender);
     }
 
-    function updateSchedule(uint256 _id, string memory _status) public {
-        require(_id > 0 && _id <= scheduleCount, "Schedule does not exist.");
-        schedules[_id].status = _status;
-        emit ScheduleUpdated(_id, _status);
+    function updateSchedule(uint256 _scheduleId, string memory _newStatus) public {
+        require(scheduleOwners[_scheduleId] == msg.sender, "Unauthorized");
+        schedules[_scheduleId].status = _newStatus;
+        emit ScheduleUpdated(_scheduleId, _newStatus);
     }
 
-    function deleteSchedule(uint256 _id) public {
-        require(_id > 0 && _id <= scheduleCount, "Schedule does not exist.");
-        delete schedules[_id];
-        emit ScheduleDeleted(_id);
+    function deleteSchedule(uint256 _scheduleId) public {
+        require(scheduleOwners[_scheduleId] == msg.sender, "Unauthorized");
+        delete schedules[_scheduleId];
+        emit ScheduleDeleted(_scheduleId);
+    }
+
+    function getAllSchedules() public view returns (Schedule[] memory) {
+        return schedules;
     }
 }

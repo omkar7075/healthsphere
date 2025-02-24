@@ -1,7 +1,7 @@
 /**
  * This file contains the React-based frontend architecture for the healthcare project.
  */
-
+import 'global';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 //import './App.css';
@@ -15,7 +15,7 @@ import HealthWellness from './Components/Pages/HealthWellness';
 import SymptomChecker from './Components/Pages/SymptomChecker';
 import SchedulingEngine from './Components/Pages/SchedulingEngine';
 import WebScraper from './Components/Pages/WebScraper';
-import AdminPanel from './Components/Pages/AdminPanel';
+//import AdminPanel from './Components/Pages/AdminPanel';
 import Login from './Components/Pages/Login';
 import Register from './Components/Pages/Register';
 import PatientRecords from './Components/Pages/PatientRecords';
@@ -45,7 +45,7 @@ const App = () => {
           <Route path="/give-prescription" element={ <GivePrescription />} />
           <Route path="/login" element={ <Login  />} />
           <Route path="/register" element={ <Register  />} />
-          <Route path="/admin-panel" element={<AdminPanel />} />
+          {/*<Route path="/admin-panel" element={<AdminPanel />} />*/}
           <Route path="/doctor-dashboard" element={<DoctorDashboard/>} />
           <Route path="/patient-dashboard" element={<PatientDashboard/>} />
           <Route path="/admin-dashboard" element={<AdminDashboard/>} />

@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const path = require("path"); // Import the path module
 const Symptom = require("../models/Symptom");
 const analyzeImageOrText = require("../utils/analyzeImage");
 const {
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname)); // Use path.extname to get the file extension
   },
 });
 const upload = multer({ storage });

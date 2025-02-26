@@ -24,11 +24,15 @@ contract AuthContract {
         emit UserRegistered(msg.sender, _email, _userType);
     }
 
-    function authenticateUser(string memory _email, string memory _password) public view returns (bool) {
-        address userAddress = emailToAddress[_email];
-        require(userAddress != address(0), "User not found");
+    function authenticateUser(string memory _email, string memory _password) public returns (bool) {
+    address userAddress = emailToAddress[_email];
+    require(userAddress != address(0), "User not found");
 
-        User memory user = users[userAddress];
-        return user.passwordHash == keccak256(abi.encodePacked(_password));
+    User memory user = users[userAddress];
+    bool isAuthenticated = user.passwordHash == keccak256(abi.encodePacked(_password));
+    if (isAuthenticated) {
+        emit UserAuthenticated(userAddress, _email);
     }
+    return isAuthenticated;
+}
 }

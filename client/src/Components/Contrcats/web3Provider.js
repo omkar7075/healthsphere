@@ -1,33 +1,14 @@
 import { ethers } from "ethers";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import contractAddresses from "./contractAddresses.json"; // Deployed contract addresses
-import AdminDashboardABI from "./AdminDashboard.json"; // AdminDashboard ABI
+import contractABIs from "./contractABIs.json"; // All ABIs in one file
 
-// Load environment variables
-const ALCHEMY_API_KEY = process.env.REACT_APP_ALCHEMY_API_KEY;
-const ALCHEMY_NETWORK = process.env.REACT_APP_NETWORK;
-
-const providerOptions = {
-  walletconnect: {
-    package: WalletConnectProvider,
-    options: {
-      rpc: {
-        1: ALCHEMY_NETWORK, // Use Alchemy API instead of Infura
-      },
-    },
-  },
-};
+// Ganache RPC URL (default is http://127.0.0.1:8545)
+const GANACHE_RPC_URL = "http://127.0.0.1:8545";
 
 /** Function to initialize Web3 provider */
 export const getWeb3Provider = async () => {
-  const web3Modal = new Web3Modal({
-    cacheProvider: true,
-    providerOptions,
-  });
-
-  const connection = await web3Modal.connect();
-  const provider = new ethers.providers.Web3Provider(connection);
+  // Connect to Ganache
+  const provider = new ethers.providers.JsonRpcProvider(GANACHE_RPC_URL);
   return provider;
 };
 
@@ -41,12 +22,12 @@ export const getContractInstance = async (contractName) => {
     throw new Error(`Contract ${contractName} address not found.`);
   }
 
-  const abiMap = {
-    AdminDashboard: AdminDashboardABI,
-    // Add other contracts...
-  };
+  // Get the ABI for the contract
+  const abi = contractABIs[contractName].abi;
 
-  const abi = abiMap[contractName];
+  if (!abi) {
+    throw new Error(`ABI for contract ${contractName} not found.`);
+  }
 
   return new ethers.Contract(contractAddress, abi, signer);
 };

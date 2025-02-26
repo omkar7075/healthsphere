@@ -1,0 +1,617 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\AdminDashboard.sol": {
+      "lastModificationDate": 1740392286348,
+      "contentHash": "d2f8e4943bc658c2c072d0c9b348c2e4",
+      "sourceName": "contracts/AdminDashboard.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AdminDashboard"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\AppointmentBooking.sol": {
+      "lastModificationDate": 1740392289630,
+      "contentHash": "697dfb81243eb49295f2541f416e483b",
+      "sourceName": "contracts/AppointmentBooking.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AppointmentBooking"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\AuthContract.sol": {
+      "lastModificationDate": 1740392291976,
+      "contentHash": "9660d0f4401190cf0890ceacb5ed1b45",
+      "sourceName": "contracts/AuthContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AuthContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\ConsultationContract.sol": {
+      "lastModificationDate": 1740392294139,
+      "contentHash": "7f39a86225b12ae48da15c3341746c94",
+      "sourceName": "contracts/ConsultationContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ConsultationContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\DoctorDashboard.sol": {
+      "lastModificationDate": 1740392296233,
+      "contentHash": "07520a1c6973e9b7e6beefae5fba8c4a",
+      "sourceName": "contracts/DoctorDashboard.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "DoctorDashboard"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\HealthArticles.sol": {
+      "lastModificationDate": 1740392299346,
+      "contentHash": "5657b3d7f8292ca329f5d8225b3fe823",
+      "sourceName": "contracts/HealthArticles.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "HealthArticles"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\HealthRecordContract.sol": {
+      "lastModificationDate": 1740392301903,
+      "contentHash": "53ce9d36140787e705e766525b41cd2d",
+      "sourceName": "contracts/HealthRecordContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "HealthRecordContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\LabBookingContract.sol": {
+      "lastModificationDate": 1740392303991,
+      "contentHash": "05070f19abfaa5abc0af11f0edf72f8d",
+      "sourceName": "contracts/LabBookingContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "LabBookingContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\MedicineContract.sol": {
+      "lastModificationDate": 1740392306063,
+      "contentHash": "0674ca5214b9402589e94cd80021ac48",
+      "sourceName": "contracts/MedicineContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MedicineContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\PatientContract.sol": {
+      "lastModificationDate": 1740392308156,
+      "contentHash": "f21f6ba5678754b0e7ebdb949bc9ea75",
+      "sourceName": "contracts/PatientContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PatientContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\Patientdashboard.sol": {
+      "lastModificationDate": 1740392310000,
+      "contentHash": "6ed8811599290d2a321b66cfc876d992",
+      "sourceName": "contracts/Patientdashboard.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PatientDashboard"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\PatientRecord.sol": {
+      "lastModificationDate": 1740566879750,
+      "contentHash": "3af8dfcd778d1f33b31add130fc2df46",
+      "sourceName": "contracts/PatientRecord.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PatientRecord"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\PrescriptionContract.sol": {
+      "lastModificationDate": 1740392314178,
+      "contentHash": "54846366d73a37ca0a0faf135834aedd",
+      "sourceName": "contracts/PrescriptionContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PrescriptionContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\ScheduleEngine .sol": {
+      "lastModificationDate": 1740561669422,
+      "contentHash": "0a1f14e345f2ddd3dc99ae34395ed1dd",
+      "sourceName": "contracts/ScheduleEngine .sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "ScheduleEngine"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\SymptomStorage.sol": {
+      "lastModificationDate": 1740392318157,
+      "contentHash": "f324a2ab8be5d7a1b18d151270c6cc32",
+      "sourceName": "contracts/SymptomStorage.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SymptomStorage"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\TestBookingContract.sol": {
+      "lastModificationDate": 1740392320125,
+      "contentHash": "50201b6e4b0fd82f8f469e03aa240619",
+      "sourceName": "contracts/TestBookingContract.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TestBookingContract"
+      ]
+    },
+    "C:\\Users\\admin\\Documents manual\\react\\healthsphere\\hardhat\\contracts\\contracts\\UserManage.sol": {
+      "lastModificationDate": 1740562301561,
+      "contentHash": "38d59c488c635499644312ec01c65c07",
+      "sourceName": "contracts/UserManage.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UserManage"
+      ]
+    }
+  }
+}

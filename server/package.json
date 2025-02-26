@@ -31,5 +31,8 @@
     "socket.io": "^4.8.1",
     "web3": "^4.16.0",
     "webrtc": "^1.14.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0"
   }
 }

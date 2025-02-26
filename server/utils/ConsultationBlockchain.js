@@ -4,7 +4,7 @@ require("dotenv").config();
 const provider = new ethers.providers.JsonRpcProvider(process.env.BLOCKCHAIN_RPC_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // Replace with your contract address
+const contractAddress = process.env.CONSULTATION_CONTRACT_ADDRESS; // Replace with your contract address
 const abi = [
   "function storeConsultation(string doctorName, string patientName, string specialty, string consultationDate, string consultationTime) public"
 ];

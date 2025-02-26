@@ -4,7 +4,7 @@ require("dotenv").config();
 const provider = new ethers.providers.JsonRpcProvider(process.env.BLOCKCHAIN_RPC_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // Replace with actual address
+const contractAddress = process.env.APPOINTMENT_BOOKING_ADDRESS; // Replace with actual address
 const abi = [
   "function bookAppointment(string name, string email, string phone, string doctor, string date, string time) public",
   "function cancelAppointment(uint256 id) public",

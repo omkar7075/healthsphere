@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import "../CSS/Home.css";
@@ -12,6 +12,7 @@ const Home = () => {
     connectWallet();
   }, []);
 
+  /** Connect to MetaMask */
   const connectWallet = async () => {
     if (window.ethereum) {
       setLoading(true);
